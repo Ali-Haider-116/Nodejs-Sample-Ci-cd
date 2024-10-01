@@ -14,32 +14,32 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Step 2: Set up Docker Buildx
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      # Step 3: Set up Node.js environment
+      # Step 2: Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '16'
 
-      # Step 4: Install dependencies
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Step 5: Install Jest (for testing)
+      # Step 4: Install Jest (for testing)
       - name: Install Jest (for testing)
         run: npm install jest
 
-      # Step 6: Run tests using Jest
+      # Step 5: Run tests using Jest
       - name: Run tests
         run: npm test
 
-      # Step 7: Log in to Docker Hub
+      # Step 6: Log in to Docker Hub
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      # Step 8: Build Docker image with Buildx
+      # Step 7: Build Docker image
       - name: Build Docker image
-        run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_USERNAME }}/node-app:latest --push .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/node-app:latest .
+
+      # Step 8: Push Docker image to Docker Hub
+      - name: Push Docker image to Docker Hub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/node-app:latest
