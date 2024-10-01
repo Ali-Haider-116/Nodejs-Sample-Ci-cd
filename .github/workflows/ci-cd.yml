@@ -10,9 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      # Step 2: Set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -22,14 +24,9 @@ jobs:
       - name: Install Jest (for testing)
         run: npm install jest
 
-      - name: Run tests using Jest
+      # Step 3: Run tests using Jest
+      - name: Run tests
         run: npm test
 
-      - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/node-app:latest .
-
-      - name: Push Docker image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/node-app:latest
+      # Step 4: Log in to Docker Hub
+     
